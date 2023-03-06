@@ -15,27 +15,37 @@ The project is designed to be dataset independent so if there is a dataset that 
 Upload the data to an S3 bucket through the AWS Gateway so that SageMaker has access to the data. 
 
 ## Hyperparameter Tuning
-What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
 
-Remember that your README should:
-- Include a screenshot of completed training jobs
-- Logs metrics during the training process
-- Tune at least two hyperparameters
-- Retrieve the best best hyperparameters from all your training jobs
+I have finetuned a Resnet50 model. I chose this because it has dence layers and should be good to capture the details in the doc breeds.
+U have tuned the following hyperparamers for SGD optimizer:
+```
+hyperparameter_ranges = {
+    "lr": ContinuousParameter(0.001, 0.1),
+    "momentum": ContinuousParameter(0.0, 1.0),
+    "batch-size": CategoricalParameter([32, 64, 128, 256]),
+}
+```
+
+
+### completed training jobs
+<img src="./images/Completed Training job.png" alt="Completed Training job" title="Completed Training job">
+
+### Hyperparameter Tuning
+<img src="./images/Hyperparameter Tuning jobs.png" alt="Hyperparameter Tuning jobs" title="Hyperparameter Tuning jobs">
+
+### Best Hyperparameters
+<img src="./images/Best Hyperparameter.png" alt="Best Hyperparameter" title="Best Hyperparameter">
+
 
 ## Debugging and Profiling
-**TODO**: Give an overview of how you performed model debugging and profiling in Sagemaker
+
+<a href="./profiler-report.html" target="_top">profiler-report</a>
 
 ### Results
-**TODO**: What are the results/insights did you get by profiling/debugging your model?
-
-**TODO** Remember to provide the profiler html/pdf file in your submission.
-
+Testing accuract 81%
 
 ## Model Deployment
-**TODO**: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
-
-**TODO** Remember to provide a screenshot of the deployed active endpoint in Sagemaker.
+<img src="./images/endpoint.png" alt="Deployed Endpoint" title="Deployed Endpoint">
 
 ## Standout Suggestions
 **TODO (Optional):** This is where you can provide information about any standout suggestions that you have attempted.
