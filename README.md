@@ -43,6 +43,11 @@ hyperparameter_ranges = {
 
 ### Results
 Testing accuract 81%
+Some sample results:
+<img src="./images/success1.png" alt="Success1" title="Success1">
+<img src="./images/success2" alt="Success2" title="Success2">
+<img src="./images/success3.png" alt="Success1" title="Success3">
+<img src="./images/failed.png" alt="failed" title="failed">
 
 ## Model Deployment
 <img src="./images/endpoint.png" alt="Deployed Endpoint" title="Deployed Endpoint">
