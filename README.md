@@ -40,7 +40,8 @@ hyperparameter_ranges = {
 ## Debugging and Profiling
 
 <a href="./profiler-report.html" target="_top">profiler-report</a>
-
+### Debug plot for loss
+<img src="./images/Debug plot.png" alt="debug" title="debug">
 ### Results
 Testing accuract 81%
 Some sample results:

@@ -11,7 +11,7 @@ import os
 import argparse
 from PIL import ImageFile
 
-def test(model, test_loader, criterion, device):
+def test(model, test_loader, criterion, device, args):
     '''
     TODO: Complete this function that can take a model and a 
           testing data loader and will get the test accuray/loss of the model
@@ -33,10 +33,11 @@ def test(model, test_loader, criterion, device):
 
     total_loss = running_loss / len(test_loader.dataset)
     total_acc = running_corrects/ len(test_loader.dataset)
+    print(f"Testing output for Hyperparameters: epoch: {args.epochs}, lr: {args.lr}, batch size: {args.batch_size}, momentum: {args.momentum}")
     print(f"Testing Loss: {total_loss}, Testing Accuracy: {100*total_acc}")
     
 
-def train(model, train_loader, validation_loader, criterion, optimizer, device):
+def train(model, train_loader, validation_loader, criterion, optimizer, device, args):
     '''
     TODO: Complete this function that can take a model and
           data loaders for training and will get train the model
@@ -46,6 +47,8 @@ def train(model, train_loader, validation_loader, criterion, optimizer, device):
     best_loss=1e6
     image_dataset={'train':train_loader, 'valid':validation_loader}
     loss_counter=0
+    
+    print(f"Starting training for Hyperparameters: epoch: {args.epochs}, lr: {args.lr}, batch size: {args.batch_size}, momentum: {args.momentum}")
     
     for epoch in range(epochs):
         for phase in ['train', 'valid']:
@@ -158,12 +161,12 @@ def main(args):
     TODO: Call the train function to start training your model
     Remember that you will need to set up a way to get training data from S3
     '''
-    model=train(model, train_loader, validation_loader, loss_criterion, optimizer, device)
+    model=train(model, train_loader, validation_loader, loss_criterion, optimizer, device, args)
     
     '''
     TODO: Test the model to see its accuracy
     '''
-    test(model, test_loader, loss_criterion, device)
+    test(model, test_loader, loss_criterion, device, args)
     
     '''
     TODO: Save the trained model

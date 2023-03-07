@@ -12,7 +12,7 @@ import argparse
 from PIL import ImageFile
 import importlib
 
-def test(model, test_loader, criterion, device, hook):
+def test(model, test_loader, criterion, device, hook, args):
     smd = importlib.import_module('smdebug')
     modes = getattr(smd, 'modes')
     
@@ -38,10 +38,11 @@ def test(model, test_loader, criterion, device, hook):
 
     total_loss = running_loss / len(test_loader.dataset)
     total_acc = running_corrects/ len(test_loader.dataset)
+    print(f"Testing output for Hyperparameters: epoch: {args.epochs}, lr: {args.lr}, batch size: {args.batch_size}, momentum: {args.momentum}")
     print(f"Testing Loss: {total_loss}, Testing Accuracy: {100*total_acc}")
     
 
-def train(model, train_loader, validation_loader, criterion, optimizer, device, epochs, hook):
+def train(model, train_loader, validation_loader, criterion, optimizer, device, epochs, hook, args):
     
     smd = importlib.import_module('smdebug')
     modes = getattr(smd, 'modes')
@@ -54,7 +55,7 @@ def train(model, train_loader, validation_loader, criterion, optimizer, device, 
     best_loss=1e6
     image_dataset={'train':train_loader, 'valid':validation_loader}
     loss_counter=0
-    
+    print(f"Starting training for Hyperparameters: epoch: {args.epochs}, lr: {args.lr}, batch size: {args.batch_size}, momentum: {args.momentum}")
     for epoch in range(epochs):
         for phase in ['train', 'valid']:
             print(f"Epoch {epoch}, Phase {phase}")
@@ -160,7 +161,7 @@ def create_data_loaders(data, batch_size):
     return data_loader
 
 def main(args):
-
+    
     pytorch = importlib.import_module('smdebug.pytorch')
     get_hook= getattr(pytorch, 'get_hook')
 
@@ -189,8 +190,8 @@ def main(args):
 
     print(f"Training on device: {device}")
     
-    hook = get_hook(create_if_not_exists=True)
-    #smd.Hook.create_from_json_file()
+    hook = pytorch.Hook.create_from_json_file()
+    #get_hook(create_if_not_exists=True)
     hook.register_hook(model)
     hook.register_loss(loss_criterion)
     
@@ -200,12 +201,12 @@ def main(args):
     TODO: Call the train function to start training your model
     Remember that you will need to set up a way to get training data from S3
     '''
-    model=train(model, train_loader, validation_loader, loss_criterion, optimizer, device, args.epochs, hook)
+    model=train(model, train_loader, validation_loader, loss_criterion, optimizer, device, args.epochs, hook, args)
     
     '''
     TODO: Test the model to see its accuracy
     '''
-    test(model, test_loader, loss_criterion, device, hook)
+    test(model, test_loader, loss_criterion, device, hook, args)
     
     '''
     TODO: Save the trained model
